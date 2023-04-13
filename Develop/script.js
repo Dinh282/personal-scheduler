@@ -9,7 +9,101 @@ $(function () {
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
 
+
+  for (let i = 9; i <= 17; i++) {
+    // create time block element
+    const convertedHour = -1*((24 % i)-12);
+
+    if (i < 12) {
+    const timeBlock = $('<div>')
+      .addClass('row time-block')
+      .attr('id', 'hour-' + i);
     
+    // create hour element
+    const hour = $('<div>')
+      .addClass('col-2 col-md-1 hour text-center py-3')
+      .text(i + 'AM');
+
+      // create input area element
+    const inputArea = $('<textarea>')
+    .addClass('col-8 col-md-10 description')
+    .attr('rows', 3);
+  
+    // create save button element
+    const saveBtn = $('<button>')
+      .addClass('btn saveBtn col-2 col-md-1')
+      .attr('aria-label', 'save');
+
+    const saveIcon = $('<i>')
+      .addClass('fas fa-save')
+      .attr('aria-hidden', true);
+
+    saveBtn.append(saveIcon);
+
+    // append children to time block element
+    timeBlock.append(hour, inputArea, saveBtn);
+  
+    // append time block element to  container
+    $('.container').append(timeBlock);
+
+    }else {
+    const timeBlock = $('<div>')
+      .addClass('row time-block')
+      .attr('id', 'hour-' + convertedHour);
+    
+    // create hour element
+    const hour = $('<div>')
+      .addClass('col-2 col-md-1 hour text-center py-3')
+      .text(convertedHour + 'PM');
+
+      // create input area element
+    const inputArea = $('<textarea>')
+    .addClass('col-8 col-md-10 description')
+    .attr('rows', 3);
+  
+    // create save button element
+    const saveBtn = $('<button>')
+      .addClass('btn saveBtn col-2 col-md-1')
+      .attr('aria-label', 'save');
+    
+    const saveIcon = $('<i>')
+      .addClass('fas fa-save')
+      .attr('aria-hidden', true);
+    
+    saveBtn.append(saveIcon);
+    
+    // append children to time block element
+    timeBlock.append(hour, inputArea, saveBtn);
+    
+    // append time block element to container
+    $('.container').append(timeBlock);
+    }
+
+    
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  //we select all the save buttons with the class saveBtn and add eventlisteners to them.
+    $(".saveBtn").on("click", function() {
+      //using an annonymous function, we grab the textarea value and id of its parent time-block
+      var text = $(this).siblings(".description").val().trim();
+      var time = $(this).parent().attr("id");
+
+      //we save what user input in the textarea to localstorage and use the
+      //id of the time-block as the key
+      localStorage.setItem(time, text);
+    });
+
 
 
   //
@@ -19,49 +113,54 @@ $(function () {
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
   //
+  const currentHour = dayjs().format("H");
+  
+  // Loop through each time block using the .each() method
+  $(".time-block").each(function() {
+    const blockHour = parseInt($(this).attr("id").split("-").pop());
+    
+    // Apply the appropriate CSS class based on the comparison of blockHour and currentHour
+    if (blockHour < currentHour) {
+      $(this).addClass("past");
+    } else if (blockHour === currentHour) {
+      $(this).addClass("present");
+    } else {
+      $(this).addClass("future");
+    }
 
-
+    // console.log(currentHour + " " + blockHour);
+    // console.log(parseInt($(".time-block").attr("id")));
+    // console.log(parseInt("hour-9".split("-").pop()));
+    // console.log($(".time-block").attr("id"));
+  });
+    
 
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
   //
 
-  // var timeBlock = $(".time-block");
+  var timeBlock = $(".time-block");
 
-  // for(var i = 0; i < timeBlock.length; i++) {
-  //   setUserInput();
-  // }
+  //we use for loop to iterate through each timeBlock to set user input in local storage.
+  for(var i = 0; i < timeBlock.length; i++) {
 
-  // function setUserInput() {
-  //   var timeBlckId = $(timeBlock).attr("id");
+   var timeBlckId = $(timeBlock[i]).attr("id");
 
-  //   var savedInput = localStorage.getItem(timeBlckId);
+    var savedInput = localStorage.getItem(timeBlckId);
 
-  //   if (savedInput !== null) {
-  //     $(timeBlock).children(".description").val(savedInput);
-  //   }
-
-
-  // }
-
-
-  $(".time-block").each(function () {
-    // Get the id attribute of the current time-block element
-    var timeBlockId = $(this).attr("id");
-  
-    // Get the saved user input from localStorage for the current time-block element
-    var savedUserInput = localStorage.getItem(timeBlockId);
-  
-    // If there is saved user input for the current time-block element, set its value to the corresponding textarea element
-    if (savedUserInput !== null) {
-      $(this).children(".description").val(savedUserInput);
+    if (savedInput !== null) {
+      $(timeBlock[i]).children(".description").val(savedInput);
     }
-  });
+
+  }
+    
 
   
   // TODO: Add code to display the current date in the header of the page.
   var currentDay = dayjs().format("dddd, MMMM DD ")  
   $("#currentDay").text(currentDay);
+
+
 
 });
