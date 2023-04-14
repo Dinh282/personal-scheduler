@@ -10,14 +10,15 @@ $(function () {
   // useful when saving the description in local storage?
 
 
-  for (let i = 9; i <= 17; i++) {
+  for (let i = 1; i <= 17; i++) {
     // create time block element
     const convertedHour = -1*((24 % i)-12);
+    
 
     if (i < 12) {
     const timeBlock = $('<div>')
       .addClass('row time-block')
-      .attr('id', 'hour-' + i);
+      .attr({'id': 'hour-' + i, "data": i});
     
     // create hour element
     const hour = $('<div>')
@@ -49,7 +50,7 @@ $(function () {
     }else {
     const timeBlock = $('<div>')
       .addClass('row time-block')
-      .attr('id', 'hour-' + convertedHour);
+      .attr({'id': 'hour-' + convertedHour, "data": i});
     
     // create hour element
     const hour = $('<div>')
@@ -85,14 +86,6 @@ $(function () {
 
 
 
-
-
-
-
-
-
-
-
   //we select all the save buttons with the class saveBtn and add eventlisteners to them.
     $(".saveBtn").on("click", function() {
       //using an annonymous function, we grab the textarea value and id of its parent time-block
@@ -117,21 +110,26 @@ $(function () {
   
   // Loop through each time block using the .each() method
   $(".time-block").each(function() {
-    const blockHour = parseInt($(this).attr("id").split("-").pop());
+    // const blockHour = parseInt($(this).attr("id").split("-").pop());
+    const blockHour = parseInt($(this).attr("data"));
+    // const blockHour = $(this).attr("data");
+    console.log(blockHour);
+    console.log(typeof blockHour);
     
-    // Apply the appropriate CSS class based on the comparison of blockHour and currentHour
+    //apply the appropriate CSS class based on the comparison of blockHour and currentHour
     if (blockHour < currentHour) {
       $(this).addClass("past");
-    } else if (blockHour === currentHour) {
+    } else if (blockHour == currentHour) {
       $(this).addClass("present");
     } else {
       $(this).addClass("future");
     }
 
-    // console.log(currentHour + " " + blockHour);
+    console.log(currentHour + " " + blockHour);
     // console.log(parseInt($(".time-block").attr("id")));
     // console.log(parseInt("hour-9".split("-").pop()));
     // console.log($(".time-block").attr("id"));
+    // console.log(blockHour)
   });
     
 
@@ -158,7 +156,7 @@ $(function () {
 
   
   // TODO: Add code to display the current date in the header of the page.
-  var currentDay = dayjs().format("dddd, MMMM DD ")  
+  var currentDay = dayjs().format("dddd, MMMM DD h:mm A")  
   $("#currentDay").text(currentDay);
 
 
