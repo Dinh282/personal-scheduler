@@ -10,20 +10,19 @@ $(function () {
   // useful when saving the description in local storage?
 
 
-  for (let i = 1; i <= 17; i++) {
-    // create time block element
-    const convertedHour = -1*((24 % i)-12);
+  for (let i = 9; i <= 17; i++) {
     
+    var indexHour = dayjs().hour(i).format('h A');
 
-    if (i < 12) {
+    // create time block element  
     const timeBlock = $('<div>')
       .addClass('row time-block')
-      .attr({'id': 'hour-' + i, "data": i});
+      .attr({'id': 'hour-' + i});
     
     // create hour element
     const hour = $('<div>')
       .addClass('col-2 col-md-1 hour text-center py-3')
-      .text(i + 'AM');
+      .text(indexHour);
 
       // create input area element
     const inputArea = $('<textarea>')
@@ -47,43 +46,7 @@ $(function () {
     // append time block element to  container
     $('.container').append(timeBlock);
 
-    }else {
-    const timeBlock = $('<div>')
-      .addClass('row time-block')
-      .attr({'id': 'hour-' + convertedHour, "data": i});
-    
-    // create hour element
-    const hour = $('<div>')
-      .addClass('col-2 col-md-1 hour text-center py-3')
-      .text(convertedHour + 'PM');
-
-      // create input area element
-    const inputArea = $('<textarea>')
-    .addClass('col-8 col-md-10 description')
-    .attr('rows', 3);
-  
-    // create save button element
-    const saveBtn = $('<button>')
-      .addClass('btn saveBtn col-2 col-md-1')
-      .attr('aria-label', 'save');
-    
-    const saveIcon = $('<i>')
-      .addClass('fas fa-save')
-      .attr('aria-hidden', true);
-    
-    saveBtn.append(saveIcon);
-    
-    // append children to time block element
-    timeBlock.append(hour, inputArea, saveBtn);
-    
-    // append time block element to container
-    $('.container').append(timeBlock);
-    }
-
-    
   }
-
-
 
 
   //we select all the save buttons with the class saveBtn and add eventlisteners to them.
@@ -110,8 +73,8 @@ $(function () {
   
   // Loop through each time block using the .each() method
   $(".time-block").each(function() {
-    // const blockHour = parseInt($(this).attr("id").split("-").pop());
-    const blockHour = parseInt($(this).attr("data"));
+    const blockHour = parseInt($(this).attr("id").split("-").pop());
+    // const blockHour = parseInt($(this).attr("data"));
     // const blockHour = $(this).attr("data");
     console.log(blockHour);
     console.log(typeof blockHour);
@@ -125,7 +88,7 @@ $(function () {
       $(this).addClass("future");
     }
 
-    console.log(currentHour + " " + blockHour);
+    // console.log(currentHour + " " + blockHour);
     // console.log(parseInt($(".time-block").attr("id")));
     // console.log(parseInt("hour-9".split("-").pop()));
     // console.log($(".time-block").attr("id"));
