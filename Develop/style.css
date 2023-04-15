@@ -68,8 +68,8 @@ textarea {
 }
 
 .line {
-border: solid black;
-background-color: black;
+  border: solid black;
+  background-color: black;
 }
 
 .savedMessage {

@@ -3,7 +3,9 @@
 // in the html.
 $(function () {
  
-  for (let i = 9; i <= 17; i++) {
+  //for loop used to create the elements for each time block and append them 
+  //to the div with the class container.
+  for (let i = 9; i <=17; i++) {
     
     var indexHour = dayjs().hour(i).format('h A');
 
@@ -47,7 +49,7 @@ $(function () {
       var text = $(this).siblings(".description").val().trim();
       var time = $(this).parent().attr("id");
 
-      //we save what user input in the textarea to localstorage and use the
+      //we save what user input in the textarea as the value to localstorage and use the
       //id of the time-block as the key
       localStorage.setItem(time, text);
 
@@ -80,7 +82,6 @@ $(function () {
   var timeBlock = $(".time-block");
   //we use for loop to iterate through each timeBlock to get user input from local storage.
   for(var i = 0; i < timeBlock.length; i++) {
-
   var timeBlckId = $(timeBlock[i]).attr("id");
   var savedInput = localStorage.getItem(timeBlckId);
 
@@ -90,12 +91,11 @@ $(function () {
     }
   }
     
-  //adds display the current date in the header of the page. 
+  //add display the current date in the header of the page. 
   //setInterval allows the time to be updated every 1 second.
   setInterval(function (){
     var currentDay = dayjs().format("dddd, MMMM DD h:mm:ss A")
     $("#currentDay").text(currentDay);
   }, 1000)
-
 
 });
