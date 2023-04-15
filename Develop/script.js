@@ -2,14 +2,7 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
-  // TODO: Add a listener for click events on the save button. This code should
-  // use the id in the containing time-block as a key to save the user input in
-  // local storage. HINT: What does `this` reference in the click listener
-  // function? How can DOM traversal be used to get the "hour-x" id of the
-  // time-block containing the button that was clicked? How might the id be
-  // useful when saving the description in local storage?
-
-
+ 
   for (let i = 9; i <= 17; i++) {
     
     var indexHour = dayjs().hour(i).format('h A');
@@ -48,7 +41,6 @@ $(function () {
 
   }
 
-
   //we select all the save buttons with the class saveBtn and add eventlisteners to them.
     $(".saveBtn").on("click", function() {
       //using an annonymous function, we grab the textarea value and id of its parent time-block
@@ -58,27 +50,23 @@ $(function () {
       //we save what user input in the textarea to localstorage and use the
       //id of the time-block as the key
       localStorage.setItem(time, text);
+
+      //when saveBtn is clicked we have a fadeIn and fadeOut effect for a message notifying 
+      //user that their entry is saved/
+      $(".savedMessage").text("Entry Saved! 💾").fadeIn('slow', function(){
+        setTimeout(function() {
+          $('.savedMessage').fadeOut('slow')
+        }, 600);
+      })
     });
 
-
-
-  //
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
-  //
-  const currentHour = dayjs().format("H");
-  
-  // Loop through each time block using the .each() method
+  // loop through each time block using the .each() method
   $(".time-block").each(function() {
+    //we split hour-x at - to get an array of [hour, x] and we pop off 
+    //x to use as value for blockhour
     const blockHour = parseInt($(this).attr("id").split("-").pop());
-    // const blockHour = parseInt($(this).attr("data"));
-    // const blockHour = $(this).attr("data");
-    console.log(blockHour);
-    console.log(typeof blockHour);
-    
+    const currentHour = dayjs().format("H");
+
     //apply the appropriate CSS class based on the comparison of blockHour and currentHour
     if (blockHour < currentHour) {
       $(this).addClass("past");
@@ -87,41 +75,27 @@ $(function () {
     } else {
       $(this).addClass("future");
     }
-
-    // console.log(currentHour + " " + blockHour);
-    // console.log(parseInt($(".time-block").attr("id")));
-    // console.log(parseInt("hour-9".split("-").pop()));
-    // console.log($(".time-block").attr("id"));
-    // console.log(blockHour)
   });
     
-
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
-
   var timeBlock = $(".time-block");
-
-  //we use for loop to iterate through each timeBlock to set user input in local storage.
+  //we use for loop to iterate through each timeBlock to get user input from local storage.
   for(var i = 0; i < timeBlock.length; i++) {
 
-   var timeBlckId = $(timeBlock[i]).attr("id");
+  var timeBlckId = $(timeBlock[i]).attr("id");
+  var savedInput = localStorage.getItem(timeBlckId);
 
-    var savedInput = localStorage.getItem(timeBlckId);
-
+  //if there is a value for the key of the time block, then we set it to the text area.
     if (savedInput !== null) {
       $(timeBlock[i]).children(".description").val(savedInput);
     }
-
   }
     
-
-  
-  // TODO: Add code to display the current date in the header of the page.
-  var currentDay = dayjs().format("dddd, MMMM DD h:mm A")  
-  $("#currentDay").text(currentDay);
-
+  //adds display the current date in the header of the page. 
+  //setInterval allows the time to be updated every 1 second.
+  setInterval(function (){
+    var currentDay = dayjs().format("dddd, MMMM DD h:mm:ss A")
+    $("#currentDay").text(currentDay);
+  }, 1000)
 
 
 });

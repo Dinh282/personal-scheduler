@@ -14,6 +14,11 @@ textarea {
 
 .p-5 {
   text-align: center;
+  padding-bottom: 2rem!important;
+}
+
+.mb-4 {
+  margin-bottom: 0!important;
 }
 
 .description {
@@ -61,3 +66,14 @@ textarea {
   font-size: 20px;
   transition: all 0.3s ease-in-out;
 }
+
+.line {
+border: solid black;
+background-color: black;
+}
+
+.savedMessage {
+  font-size: 1.3rem;
+  text-align: center;
+}
+
